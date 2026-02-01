@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
 
 
 
-h1, h2, p, ul, li {
+h1, h2, p, ul, li, figure {
     margin: 0;
     padding: 0;
 } 

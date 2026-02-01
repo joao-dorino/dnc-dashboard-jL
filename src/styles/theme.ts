@@ -1,6 +1,6 @@
 import type { DefaultTheme } from "styled-components"
 
-export const lighTheme: DefaultTheme = {
+export const lightTheme: DefaultTheme = {
 
   appBackground: '#fff',
   appColor: '#000',
@@ -74,7 +74,7 @@ export const darkTheme: DefaultTheme = {
   },
 
   textInput: {
-    active: '#f01535',
+    active: '#0f1535',
     activeColor: '#fff',
     borderColor: '#21497d',
     disabled: '#282d49',
