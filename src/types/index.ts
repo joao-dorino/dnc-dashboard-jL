@@ -1,4 +1,5 @@
 export * from './avatarList'
+export * from './customTable'
 export * from './styled'
 export * from './typographies'
 export * from './formComponent'
