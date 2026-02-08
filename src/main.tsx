@@ -1,15 +1,15 @@
 
 import { createRoot } from 'react-dom/client'
-import { ThemeProvider } from 'styled-components'
 import App from './App.tsx'
-import { GlobalStyle, lightTheme } from './styles/'
+import { AppThemeProvider } from './contexts/AppThemeProvider.tsx'
+import { GlobalStyle } from './styles/globalStyle.ts'
 
 createRoot(document.getElementById('root')!).render(
   <>
-    <ThemeProvider theme={lightTheme}>
-      <GlobalStyle />
+    <AppThemeProvider>  
+        <GlobalStyle />
     <App />
-    </ThemeProvider>
+    </AppThemeProvider>
     
   </>
 )
