@@ -1,4 +1,4 @@
-export interface decodedJWT {
+export interface DecodedJWT {
     userId: number;
     iat: number;
     exp: number;
