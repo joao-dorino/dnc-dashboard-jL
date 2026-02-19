@@ -4,31 +4,31 @@ import type { FormComponentProps } from "@/types";
 import { pxToRem } from '@/utils';
 
 export const StyledForm = styled.form`
-display: flex;
-flex-direction: column;
-row-gap: ${pxToRem(16)};
-`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${pxToRem(16)};
+`;
 
 function FormComponent(props: FormComponentProps) {
-    const { inputs, buttons, message } = props;
+  const { inputs, buttons, message, onSubmit } = props; // 👈 adiciona aqui
 
-    return (
-        <StyledForm>
-            {inputs.map((inputProps, index) => (
-                <StyledInput key={index} {...inputProps} />
-            ))}
+  return (
+    <StyledForm onSubmit={onSubmit}> {/* 👈 adiciona aqui */}
+      {inputs.map((inputProps, index) => (
+        <StyledInput key={index} {...inputProps} />
+      ))}
 
-            {buttons.map((buttonsProps, index) => (
-                <StyledButton key={index} {...buttonsProps} />
-            ))}
+      {buttons.map((buttonsProps, index) => (
+        <StyledButton key={index} {...buttonsProps} />
+      ))}
 
-            {message && (
-                <div style={{ color: message.type === 'error' ? 'red' : 'green' }}>
-                    {message.msg}
-                </div>
-            )}
-        </StyledForm>
-    )
+      {message && (
+        <div style={{ color: message.type === 'error' ? 'red' : 'green' }}>
+          {message.msg}
+        </div>
+      )}
+    </StyledForm>
+  );
 }
 
-export default FormComponent;  
+export default FormComponent;
