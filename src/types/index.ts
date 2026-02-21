@@ -1,7 +1,6 @@
 export * from './appThemeContext'
 export * from './avatarList'
 export * from './customChart'
-export * from './decodedJwt'
 export * from './customTable'
 export * from './DecodedJWT'
 export * from './formComponent'

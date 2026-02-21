@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import cookies from "js-cookie";
 
 // COMPONENTS
@@ -18,16 +17,15 @@ import { Box, Container, Grid } from "@mui/material";
 // HOOKS
 import { useFormValidation, usePost } from "@/hooks";
 
-// UTILS
-import { jwtExpirationDateConverter, pxToRem } from "@/utils";
-
 // TYPES
 import type {
-  DecodedJWT,
-  MessageProps,
   LoginData,
   LoginPostData,
+  MessageProps,
 } from "@/types";
+
+// UTILS
+import { pxToRem } from "@/utils";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -37,8 +35,9 @@ export default function Login() {
     { type: "password", placeholder: "Senha" },
   ];
 
+  // 🔥 Fake API
   const { data, loading, error, postData } =
-    usePost<LoginData, LoginPostData>("login");
+    usePost<LoginData, LoginPostData>();
 
   const { formValues, formValid, handleChange } =
     useFormValidation(inputs);
@@ -52,8 +51,16 @@ export default function Login() {
     });
   };
 
-  const handleMessage = (): MessageProps => {
-    if (!error) return { msg: "", type: "success" };
+  // 🔥 Quando "login" der certo
+  useEffect(() => {
+    if (data?.jwt_token) {
+      cookies.set("Authorization", data.jwt_token);
+      navigate("/home");
+    }
+  }, [data, navigate]);
+
+  const handleMessage = (): MessageProps | undefined => {
+    if (!error) return undefined;
 
     if (error === 401) {
       return { msg: "Email ou senha inválidos", type: "error" };
@@ -64,19 +71,6 @@ export default function Login() {
       type: "error",
     };
   };
-
-  useEffect(() => {
-    if (data?.jwt_token) {
-      const decoded: DecodedJWT = jwtDecode(data.jwt_token);
-
-      cookies.set("Authorization", data.jwt_token, {
-        expires: jwtExpirationDateConverter(decoded.exp),
-        secure: true,
-      });
-
-      navigate("/home");
-    }
-  }, [data, navigate]);
 
   return (
     <Box>
