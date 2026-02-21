@@ -12,11 +12,11 @@ export const useFormValidation = (inputs: inputProps[]) => {
       if (!input) return false;
 
       if (input.type === "email") {
-        return /\S+@\S+\.\S+/.test(value);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       }
 
       if (input.type === "password") {
-        return value.length >= 7;
+        return value.length >= 8;
       }
 
       return value.trim() !== "";
