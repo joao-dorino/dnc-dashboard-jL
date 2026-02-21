@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import cookies from "js-cookie";
 
 // COMPONENTS
@@ -15,10 +16,18 @@ import {
 import { Box, Container, Grid } from "@mui/material";
 
 // HOOKS
-import { useFormValidation } from "@/hooks";
+import { useFormValidation, usePost } from "@/hooks";
 
 // UTILS
-import { pxToRem } from "@/utils";
+import { jwtExpirationDateConverter, pxToRem } from "@/utils";
+
+// TYPES
+import type {
+  DecodedJWT,
+  MessageProps,
+  LoginData,
+  LoginPostData,
+} from "@/types";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -28,23 +37,46 @@ export default function Login() {
     { type: "password", placeholder: "Senha" },
   ];
 
+  const { data, loading, error, postData } =
+    usePost<LoginData, LoginPostData>("login");
+
   const { formValues, formValid, handleChange } =
     useFormValidation(inputs);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 🔥 Simulação simples
-    if (formValues[0] && formValues[1]) {
-      cookies.set("Authorization", "fake-token");
-      navigate("/home");
+    postData({
+      email: formValues[0],
+      password: formValues[1],
+    });
+  };
+
+  const handleMessage = (): MessageProps => {
+    if (!error) return { msg: "", type: "success" };
+
+    if (error === 401) {
+      return { msg: "Email ou senha inválidos", type: "error" };
     }
+
+    return {
+      msg: "Erro no servidor. Tente novamente.",
+      type: "error",
+    };
   };
 
   useEffect(() => {
-    const token = cookies.get("Authorization");
-    if (token) navigate("/home");
-  }, [navigate]);
+    if (data?.jwt_token) {
+      const decoded: DecodedJWT = jwtDecode(data.jwt_token);
+
+      cookies.set("Authorization", data.jwt_token, {
+        expires: jwtExpirationDateConverter(decoded.exp),
+        secure: true,
+      });
+
+      navigate("/home");
+    }
+  }, [data, navigate]);
 
   return (
     <Box>
@@ -83,10 +115,11 @@ export default function Login() {
                 {
                   type: "submit",
                   className: "primary",
-                  disabled: !formValid,
-                  children: "Login",
+                  disabled: !formValid || loading,
+                  children: loading ? "Aguarde..." : "Login",
                 },
               ]}
+              message={handleMessage()}
             />
           </Container>
         </Grid>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { inputProps } from "@/types";
 
 export const useFormValidation = (inputs: inputProps[]) => {
@@ -6,31 +6,30 @@ export const useFormValidation = (inputs: inputProps[]) => {
     inputs.map(() => "")
   );
 
+  const formValid = useMemo(() => {
+    return formValues.every((value, index) => {
+      const input = inputs[index];
+      if (!input) return false;
+
+      if (input.type === "email") {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      }
+
+      if (input.type === "password") {
+        return value.length >= 8;
+      }
+
+      return value.trim() !== "";
+    });
+  }, [formValues, inputs]);
+
   const handleChange = (index: number, value: string) => {
     setFormValues((prev) => {
-      const newValues = [...prev];
-      newValues[index] = value;
-      return newValues;
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
     });
   };
 
-  const formValid = inputs.every((input, index) => {
-    const value = formValues[index];
-
-    if (input.type === "email") {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    }
-
-    if (input.type === "password") {
-      return value.length > 7;
-    }
-
-    return value.trim() !== "";
-  });
-
-  return {
-    formValues,
-    formValid,
-    handleChange,
-  };
+  return { formValues, formValid, handleChange };
 };

@@ -1,3 +1,3 @@
 export * from './currencyConverter';
-export * from './jwtEpirationDateConverter'
+export * from './jwtExpirationDateConverter';
 export * from './pxToRem';

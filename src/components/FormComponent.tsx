@@ -10,19 +10,19 @@ export const StyledForm = styled.form`
 `;
 
 function FormComponent(props: FormComponentProps) {
-  const { inputs, buttons, message, onSubmit } = props; // 👈 adiciona aqui
+  const { inputs, buttons, message, onSubmit } = props;
 
   return (
-    <StyledForm onSubmit={onSubmit}> {/* 👈 adiciona aqui */}
+    <StyledForm onSubmit={onSubmit}>
       {inputs.map((inputProps, index) => (
         <StyledInput key={index} {...inputProps} />
       ))}
 
-      {buttons.map((buttonsProps, index) => (
-        <StyledButton key={index} {...buttonsProps} />
+      {buttons.map((buttonProps, index) => (
+        <StyledButton key={index} {...buttonProps} />
       ))}
 
-      {message && (
+      {message && message.msg && (
         <div style={{ color: message.type === 'error' ? 'red' : 'green' }}>
           {message.msg}
         </div>
