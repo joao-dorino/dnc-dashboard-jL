@@ -10,28 +10,30 @@ import { Container, Grid } from '@mui/material'
 import { currencyConverter } from '@/utils'
 
 function Home() {
+
   const mockListData = [
     {
-      avatar: '/dnc-avatar.svg',
-      name: 'Name Sobrenome',
+      avatar: "/dnc-avatar.svg",
+      name: "Name Sobrenome",
       subtitle: currencyConverter(1000.01),
     },
     {
-      avatar: '/dnc-avatar.svg',
-      name: 'Name Sobrenome 2',
+      avatar: "/dnc-avatar.svg",
+      name: "Name Sobrenome 2",
       subtitle: currencyConverter(2000.02),
     },
     {
-      avatar: '/dnc-avatar.svg',
-      name: 'Name Sobrenome 3',
+      avatar: "/dnc-avatar.svg",
+      name: "Name Sobrenome 3",
       subtitle: currencyConverter(3000.03),
     },
   ]
 
   const mockTableData = {
-    headers: ['Name', 'Email', 'Actions'],
+    headers: ["Name", "Email", "Actions"],
     rows: [
       [
+
         <span>Nome 1</span>,
         <span>Nome1@gmail.com</span>,
         <button>ACTION</button>,
@@ -52,6 +54,7 @@ function Home() {
   return (
     <>
       <Header />
+
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
@@ -105,8 +108,10 @@ function Home() {
             </CardComponent>
           </Grid>
         </Grid>
+
       </Container>
     </>
-  )
+  );
 }
-export default Home
+
+export default Home;
