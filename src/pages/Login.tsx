@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import cookies from "js-cookie";
 
-//COMPONENETS
+// COMPONENTS
 import {
   BannerImage,
   FormComponent,
@@ -12,41 +11,55 @@ import {
   StyledH1,
   StyledP,
 } from "@/components";
+
 import { Box, Container, Grid } from "@mui/material";
 
-//HOOKS
+// HOOKS
 import { useFormValidation, usePost } from "@/hooks";
 
- //UTILS
-import { jwtExpirationDateConverter, pxToRem } from "@/utils";
+// TYPES
+import type {
+  LoginData,
+  LoginPostData,
+  MessageProps,
+} from "@/types";
 
-//TYPES
-import type { DecodedJWT, MessageProps, LoginData, LoginPostData } from "@/types";
+// UTILS
+import { pxToRem } from "@/utils";
 
 export default function Login() {
   const navigate = useNavigate();
+
   const inputs = [
     { type: "email", placeholder: "Email" },
     { type: "password", placeholder: "Senha" },
   ];
 
- const { data, loading, error } =
-  usePost<LoginData, LoginPostData>("login");
+  //  Fake API
+  const { data, loading, error, postData } =
+    usePost<LoginData, LoginPostData>("/login");
 
   const { formValues, formValid, handleChange } =
     useFormValidation(inputs);
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  console.log("Botão clicado"); // 👈 teste
+    postData({
+      email: formValues[0],
+      password: formValues[1],
+    });
+  };
 
-  cookies.set("Authorization", "fake-token");
-  navigate("/home");
-};
+  useEffect(() => {
+    if (data?.jwt_token) {
+      cookies.set("Authorization", data.jwt_token);
+      navigate("/home");
+    }
+  }, [data, navigate]);
 
-  const handleMessage = (): MessageProps => {
-    if (!error) return { msg: "", type: "success" };
+  const handleMessage = (): MessageProps | undefined => {
+    if (!error) return undefined;
 
     if (error === 401) {
       return { msg: "Email ou senha inválidos", type: "error" };
@@ -57,20 +70,6 @@ export default function Login() {
       type: "error",
     };
   };
-
- useEffect(() => {
-  if (data?.jwt_token) {
-    const decoded: DecodedJWT = jwtDecode(data.jwt_token);
-
-    cookies.set("Authorization", data.jwt_token, {
-      expires: jwtExpirationDateConverter(decoded.exp),
-      secure: true,
-    });
-
-    if (cookies.get("Authorization")) navigate("/home");
-  }
-}, [data, navigate]);
-
 
   return (
     <Box>
