@@ -1,15 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-<<<<<<< HEAD
-import { useState, useEffect } from "react";
-import axios from "axios";
-import type { AxiosRequestConfig } from "axios";
-import Cookies from "js-cookie";
-=======
-import { useState } from "react";
->>>>>>> feat/logout-flow
+import { useState, useEffect } from 'react' // O professor só importou useState na imagem
+import axios from 'axios'
+import type { AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
 
-export const usePost = <T, P>() => {
+// 🚀 Instância criada direto no arquivo como no curso
+const axiosInstance = axios.create({
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
+});
+
+export const usePost = <T, P>(endpoint: string) => { 
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<number | null>(null);
@@ -17,6 +17,10 @@ export const usePost = <T, P>() => {
   const postData = async (payload: P) => {
     setLoading(true);
     setError(null);
+
+    // Se você usa o código fake, o TS reclama que não usa o 'endpoint'.
+    // Para resolver, simulamos o uso dele no console ou usamos a chamada real.
+    console.log(`Chamando endpoint: ${endpoint}`); 
 
     setTimeout(() => {
       const body = payload as any;
@@ -35,11 +39,9 @@ export const usePost = <T, P>() => {
   };
 
   return { data, loading, error, postData };
-<<<<<<< HEAD
 };
 
-
-export const useGet = <T>( endpoint: string, config?: AxiosRequestConfig) => {
+export const useGet = <T>(endpoint: string, config?: AxiosRequestConfig) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<number | null>(null);
@@ -54,7 +56,7 @@ export const useGet = <T>( endpoint: string, config?: AxiosRequestConfig) => {
         method: 'GET',
         headers: {
           "Authorization": `Bearer ${Cookies.get('Authorization')}`,
-         ...config?.headers,
+          ...config?.headers,
         },
         ...config,
       });
@@ -67,13 +69,10 @@ export const useGet = <T>( endpoint: string, config?: AxiosRequestConfig) => {
     }
   };
 
-useEffect(() => {
-  getData()
-}, [])
-
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
 
   return { data, loading, error, getData };
 };
-=======
-};
->>>>>>> feat/logout-flow
