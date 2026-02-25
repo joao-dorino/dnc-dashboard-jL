@@ -35,9 +35,9 @@ export default function Login() {
     { type: "password", placeholder: "Senha" },
   ];
 
-  // 🔥 Fake API
+  //  Fake API
   const { data, loading, error, postData } =
-    usePost<LoginData, LoginPostData>();
+    usePost<LoginData, LoginPostData>("/login");
 
   const { formValues, formValid, handleChange } =
     useFormValidation(inputs);
@@ -51,7 +51,6 @@ export default function Login() {
     });
   };
 
-  // 🔥 Quando "login" der certo
   useEffect(() => {
     if (data?.jwt_token) {
       cookies.set("Authorization", data.jwt_token);
