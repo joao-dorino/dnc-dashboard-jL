@@ -1,7 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom"
 import Cookies from "js-cookie"
+
+// PAGES
 import { Home, Leads, Login, Profile, Registration } from "./pages"
 
+//  Rota protegida
 function ProtectedRoute() {
   const isAuthenticated = !!Cookies.get("Authorization")
 
@@ -12,6 +15,7 @@ function ProtectedRoute() {
   return <Outlet />
 }
 
+//  Rota pública (login e cadastro)
 function PublicRoute() {
   const isAuthenticated = !!Cookies.get("Authorization")
 
@@ -27,7 +31,7 @@ function App() {
     <Router>
       <Routes>
 
-        {/* Redireciona "/" para "/login" */}
+        {/* Redireciona raiz para login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Rotas públicas */}
@@ -42,6 +46,9 @@ function App() {
           <Route path="/leads" element={<Leads />} />
           <Route path="/perfil" element={<Profile />} />
         </Route>
+
+        {/* Rota fallback (caso digite algo errado na URL) */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>
     </Router>
