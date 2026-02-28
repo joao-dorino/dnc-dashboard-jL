@@ -10,6 +10,10 @@ export const useFormValidation = (inputs: inputProps[]) => {
     return formValues.every((value, index) => {
       const input = inputs[index];
       if (!input) return false;
+      
+      const valuer = formValues[index]
+      if (input.required && !valuer )
+        return false
 
       if (input.type === "email") {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
