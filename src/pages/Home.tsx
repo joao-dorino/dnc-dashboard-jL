@@ -1,3 +1,4 @@
+import{ Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import {
   AvatarList,
@@ -125,13 +126,13 @@ function Home() {
                   }
                 >
                   {!highlightsLoading && highlightsData && (
-                    <>
-                      <StyledH2 className="mb-1">Meta do mês</StyledH2>
+                    <Link to="/leads">
+                       <StyledH2 className="mb-1">Meta do mês</StyledH2>
                       <StyledH3 className="mb-1" size={40} lineHeight={40}>
                         {currencyConverter(highlightsData[1].value)}
                       </StyledH3>
                       <StyledSpan>{highlightsDataTextConverter(highlightsData[1].subtitle)}</StyledSpan>
-                    </>
+                    </Link>
                   )}
                 </CardComponent>
               </Grid>
