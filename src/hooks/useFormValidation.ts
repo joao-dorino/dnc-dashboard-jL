@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import type { inputProps } from "@/types";
+import type { InputProps } from "@/types";
 
-export const useFormValidation = (inputs: inputProps[]) => {
+export const useFormValidation = (inputs: InputProps[]) => {
   const [formValues, setFormValues] = useState<string[]>(
     inputs.map(() => "")
   );
@@ -10,10 +10,9 @@ export const useFormValidation = (inputs: inputProps[]) => {
     return formValues.every((value, index) => {
       const input = inputs[index];
       if (!input) return false;
-      
-      const valuer = formValues[index]
-      if (input.required && !valuer )
-        return false
+
+      if (input.required && !value.trim())
+        return false;
 
       if (input.type === "email") {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -23,7 +22,7 @@ export const useFormValidation = (inputs: inputProps[]) => {
         return value.length >= 8;
       }
 
-      return value.trim() !== "";
+      return true;
     });
   }, [formValues, inputs]);
 
@@ -35,5 +34,10 @@ export const useFormValidation = (inputs: inputProps[]) => {
     });
   };
 
-  return { formValues, formValid, handleChange };
+  // ✅ ADICIONADO
+  const resetForm = () => {
+    setFormValues(inputs.map(() => ""));
+  };
+
+  return { formValues, formValid, handleChange, resetForm };
 };

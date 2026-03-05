@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import type { ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import cookies from "js-cookie";
+import { useEffect } from "react"
+import type { ChangeEvent } from "react"
+import { useNavigate } from "react-router-dom"
+import Cookies from "js-cookie"
 
 // COMPONENTS
 import {
@@ -10,66 +10,81 @@ import {
   Logo,
   StyledH1,
   StyledP,
-} from "@/components";
+} from "@/components"
 
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material"
 
 // HOOKS
-import { useFormValidation, usePost } from "@/hooks";
+import { useFormValidation, usePost } from "@/hooks"
 
 // TYPES
-import type {
-  LoginData,
-  LoginPostData,
-  MessageProps,
-} from "@/types";
+import type { MessageProps } from "@/types"
 
 // UTILS
-import { pxToRem } from "@/utils";
+import { pxToRem } from "@/utils"
 
 export default function Login() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const inputs = [
-    { type: "email", placeholder: "Email" },
-    { type: "password", placeholder: "Senha" },
-  ];
-
-  //  Fake API
-  const { data, loading, error, postData } =
-    usePost<LoginData, LoginPostData>("/login");
+    { type: "email", placeholder: "Email", required: true },
+    { type: "password", placeholder: "Senha", required: true },
+  ]
 
   const { formValues, formValid, handleChange } =
-    useFormValidation(inputs);
+    useFormValidation(inputs)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // LOGIN HOOK
+  const [
+    loginData,
+    loginLoading,
+    loginError,
+    login,
+  ] = usePost<
+    { jwt_token: string },
+    { email: string; password: string }
+  >("login")
 
-    postData({
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const result = await login({
       email: formValues[0],
       password: formValues[1],
-    });
-  };
+    })
 
+    if (result?.jwt_token) {
+      Cookies.set("Authorization", result.jwt_token)
+      navigate("/home")
+    }
+  }
+
+  // REDIRECIONA SE LOGIN OK
   useEffect(() => {
-    if (data?.jwt_token) {
-      cookies.set("Authorization", data.jwt_token);
-      navigate("/home");
+    if (loginData?.jwt_token) {
+      Cookies.set("Authorization", loginData.jwt_token)
+      navigate("/home")
     }
-  }, [data, navigate]);
+  }, [loginData, navigate])
 
+  // MENSAGEM DE ERRO
   const handleMessage = (): MessageProps | undefined => {
-    if (!error) return undefined;
-
-    if (error === 401) {
-      return { msg: "Email ou senha inválidos", type: "error" };
+    if (loginError === 401) {
+      return {
+        type: "error",
+        msg: "Email ou senha inválidos",
+      }
     }
 
-    return {
-      msg: "Erro no servidor. Tente novamente.",
-      type: "error",
-    };
-  };
+    if (loginError) {
+      return {
+        type: "error",
+        msg: "Erro ao fazer login",
+      }
+    }
+
+    return undefined
+  }
 
   return (
     <Box>
@@ -100,7 +115,7 @@ export default function Login() {
               onSubmit={handleSubmit}
               inputs={inputs.map((input, index) => ({
                 ...input,
-                value: formValues[index],
+                value: formValues[index] || "",
                 onChange: (e: ChangeEvent<HTMLInputElement>) =>
                   handleChange(index, e.target.value),
               }))}
@@ -108,8 +123,10 @@ export default function Login() {
                 {
                   type: "submit",
                   className: "primary",
-                  disabled: !formValid || loading,
-                  children: loading ? "Aguarde..." : "Login",
+                  disabled: !formValid || loginLoading,
+                  children: loginLoading
+                    ? "Entrando..."
+                    : "Login",
                 },
               ]}
               message={handleMessage()}
@@ -126,5 +143,5 @@ export default function Login() {
         </Grid>
       </Grid>
     </Box>
-  );
+  )
 }
