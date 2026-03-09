@@ -32,7 +32,7 @@ const initializeMock = () => {
 
 initializeMock()
 
-/* ================= POST ================= */
+
 
 export const usePost = <T, P>(endpoint: string, withAuth = false) => {
   const [data, setData] = useState<T | null>(null)
@@ -67,6 +67,7 @@ export const usePost = <T, P>(endpoint: string, withAuth = false) => {
             Cookies.set("Authorization", "mock-token", { expires: 1 })
 
             const result = { jwt_token: "mock-token" } as T
+
             setData(result)
 
             return result
@@ -74,6 +75,23 @@ export const usePost = <T, P>(endpoint: string, withAuth = false) => {
 
           setError(401)
           return null
+        }
+
+        /* CREATE PROFILE */
+
+        if (endpoint === "profile/create") {
+          const newUser = {
+            ...(payload as any),
+          }
+
+          localStorage.setItem(
+            "mockUser",
+            JSON.stringify(newUser)
+          )
+
+          setData(newUser as T)
+
+          return newUser as T
         }
 
         /* CREATE LEAD */
@@ -112,18 +130,23 @@ export const usePost = <T, P>(endpoint: string, withAuth = false) => {
       setData(response.data)
 
       return response.data
+
     } catch (err: any) {
+
       setError(err?.response?.status ?? 500)
+
       return null
+
     } finally {
+
       setLoading(false)
+
     }
   }
 
   return [data, loading, error, postData] as const
 }
 
-/* ================= GET ================= */
 
 export const useGet = <T>(
   endpoint: string,
@@ -185,7 +208,6 @@ export const useGet = <T>(
   return [data, loading, error, getData] as const
 }
 
-/* ================= PUT ================= */
 
 export const usePut = <T>(endpoint: string, withAuth = true) => {
   const [data, setData] = useState<T | null>(null)

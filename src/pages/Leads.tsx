@@ -21,9 +21,6 @@ import type { InputProps } from "@/types"
 import type { LeadsData, LeadsPostData } from "@/types"
 
 function Leads() {
-  // =============================
-  // INPUTS
-  // =============================
   const inputs: InputProps[] = [
     { name: "name", type: "text", placeholder: "Nome", required: true },
     { name: "email", type: "email", placeholder: "Email", required: true },
@@ -37,9 +34,6 @@ function Leads() {
     resetForm,
   } = useFormValidation(inputs)
 
-  // =============================
-  // GET LEADS
-  // =============================
   const [
     leadsData,
     leadsLoading,
@@ -47,9 +41,7 @@ function Leads() {
     getLeads,
   ] = useGet<LeadsData[]>("leads")
 
-  // =============================
-  // CREATE LEAD
-  // =============================
+
   const [
     ,
     createLoading,
@@ -60,14 +52,10 @@ function Leads() {
     true
   )
 
-  // =============================
-  // DELETE LEAD
-  // =============================
+
   const [, , , deleteLead] = useDelete("leads")
 
-  // =============================
-  // SUBMIT
-  // =============================
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -87,9 +75,6 @@ function Leads() {
     }
   }
 
-  // =============================
-  // DELETE
-  // =============================
   const handleDelete = async (id: string) => {
     const confirmDelete = window.confirm(
       "Tem certeza que deseja excluir este lead?"
@@ -107,7 +92,6 @@ function Leads() {
 
       <Container className="mb-2" maxWidth="lg">
         <Grid container spacing={4}>
-          {/* ================= TABELA ================= */}
           <Grid item xs={12} sm={7}>
             <CardComponent>
               <StyledH2 className="mb-1">
@@ -149,7 +133,6 @@ function Leads() {
             </CardComponent>
           </Grid>
 
-          {/* ================= FORM ================= */}
           <Grid item xs={12} sm={5}>
             <CardComponent>
               <StyledH2 className="mb-1">
