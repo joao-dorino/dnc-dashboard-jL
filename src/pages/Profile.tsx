@@ -24,10 +24,6 @@ function Profile() {
 
   const themeContext = useContext(AppThemeContext)
 
-  // =============================
-  // FORM CONFIG
-  // =============================
-
   const inputs: InputProps[] = [
     { name: "name", type: "text", placeholder: "Nome", required: true },
     { name: "email", type: "email", placeholder: "Email", required: true },
@@ -35,10 +31,6 @@ function Profile() {
   ]
 
   const { formValues, formValid, handleChange } = useFormValidation(inputs)
-
-  // =============================
-  // MESSAGE
-  // =============================
 
   const [updateMessage, setUpdateMessage] = useState<MessageProps>({
     type: "success",
@@ -51,10 +43,6 @@ function Profile() {
     }, 3000)
   }
 
-  // =============================
-  // GET PROFILE
-  // =============================
-
   const [
     profileData,
     profileLoading,
@@ -62,9 +50,6 @@ function Profile() {
     getData
   ] = useGet<ProfileData>("profile")
 
-  // =============================
-  // PUT PROFILE
-  // =============================
 
   const [
     profileUpdateData,
@@ -73,20 +58,12 @@ function Profile() {
     putData
   ] = usePut<ProfileData>("profile")
 
-  // =============================
-  // DELETE PROFILE
-  // =============================
-
   const [
     ,
     profileDeleteLoading,
     ,
     deleteData
   ] = useDelete("profile")
-
-  // =============================
-  // POPULAR FORM
-  // =============================
 
   useEffect(() => {
     if (profileData) {
@@ -96,10 +73,7 @@ function Profile() {
     }
   }, [profileData])
 
-  // =============================
-  // SUCCESS / ERROR MESSAGE
-  // =============================
-
+  
   useEffect(() => {
 
     if (profileUpdateData) {
@@ -122,10 +96,6 @@ function Profile() {
 
   }, [profileUpdateData, profileUpdateError])
 
-  // =============================
-  // SUBMIT
-  // =============================
-
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault()
@@ -139,9 +109,6 @@ function Profile() {
     await getData()
   }
 
-  // =============================
-  // DELETE ACCOUNT
-  // =============================
 
   const handleDelete = async () => {
 
@@ -165,10 +132,6 @@ function Profile() {
 
     }
   }
-
-  // =============================
-  // RENDER
-  // =============================
 
   return (
     <>

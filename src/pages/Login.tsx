@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react"
 import type { ChangeEvent } from "react"
 import { useNavigate } from "react-router-dom"
@@ -17,6 +18,10 @@ import { Box, Container, Grid } from "@mui/material"
 // HOOKS
 import { useFormValidation, usePost } from "@/hooks"
 
+//REDUX
+import { useSelector } from 'react-redux'
+import type { RootState } from '@/redux/slices'
+
 // TYPES
 import type { MessageProps } from "@/types"
 
@@ -25,7 +30,7 @@ import { pxToRem } from "@/utils"
 
 export default function Login() {
   const navigate = useNavigate()
-
+  const { email } = useSelector((state: RootState) => state.createProfile);
   const inputs = [
     { type: "email", placeholder: "Email", required: true },
     { type: "password", placeholder: "Senha", required: true },
@@ -66,6 +71,12 @@ export default function Login() {
       navigate("/home")
     }
   }, [loginData, navigate])
+
+    useEffect (() => {
+      if (email) {
+        handleChange(0, email)
+      }
+    }, [email])
 
   // MENSAGEM DE ERRO
   const handleMessage = (): MessageProps | undefined => {
