@@ -5,19 +5,14 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "types": ["node"],
-    "skipLibCheck": true, 
+    "skipLibCheck": true,
 
-  
-  
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
 
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -25,5 +20,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "vite.config.ts",
+    "src/setupTests.ts"
+  ]
 }

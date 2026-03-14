@@ -3,9 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "types": ["node", "jest"]
   },
-
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
