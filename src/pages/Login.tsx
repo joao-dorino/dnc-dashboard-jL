@@ -18,9 +18,9 @@ import { Box, Container, Grid } from "@mui/material"
 // HOOKS
 import { useFormValidation, usePost } from "@/hooks"
 
-//REDUX
-import { useSelector } from 'react-redux'
-import type { RootState } from '@/redux/slices'
+// REDUX
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux/slices"
 
 // TYPES
 import type { MessageProps } from "@/types"
@@ -30,7 +30,8 @@ import { pxToRem } from "@/utils"
 
 export default function Login() {
   const navigate = useNavigate()
-  const { email } = useSelector((state: RootState) => state.createProfile);
+  const { email } = useSelector((state: RootState) => state.createProfile)
+
   const inputs = [
     { type: "email", placeholder: "Email", required: true },
     { type: "password", placeholder: "Senha", required: true },
@@ -40,12 +41,7 @@ export default function Login() {
     useFormValidation(inputs)
 
   // LOGIN HOOK
-  const [
-    loginData,
-    loginLoading,
-    loginError,
-    login,
-  ] = usePost<
+  const [loginData, loginLoading, loginError, login] = usePost<
     { jwt_token: string },
     { email: string; password: string }
   >("login")
@@ -53,30 +49,26 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const result = await login({
+    await login({
       email: formValues[0],
       password: formValues[1],
     })
-
-    if (result?.jwt_token) {
-      Cookies.set("Authorization", result.jwt_token)
-      navigate("/home")
-    }
   }
 
   // REDIRECIONA SE LOGIN OK
   useEffect(() => {
     if (loginData?.jwt_token) {
       Cookies.set("Authorization", loginData.jwt_token)
-      navigate("/home")
+      navigate("/home", { replace: true })
     }
   }, [loginData, navigate])
 
-    useEffect (() => {
-      if (email) {
-        handleChange(0, email)
-      }
-    }, [email])
+  // PREENCHE EMAIL VINDO DO REDUX
+  useEffect(() => {
+    if (email) {
+      handleChange(0, email)
+    }
+  }, [email])
 
   // MENSAGEM DE ERRO
   const handleMessage = (): MessageProps | undefined => {

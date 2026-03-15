@@ -20,7 +20,7 @@ const initializeMock = () => {
         name: "Lucas Santos",
         email: "admin@email.com",
         phone: "(18) 99999-9999",
-        password: "12345678",
+        password: "Testednc@7",
       })
     )
   }

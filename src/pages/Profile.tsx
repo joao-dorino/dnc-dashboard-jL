@@ -171,6 +171,7 @@ function Profile() {
                         {
                           type: "submit",
                           className: "primary",
+                          id: "update-profile",
                           disabled: !formValid || profileUpdateLoading,
                           children: profileUpdateLoading
                             ? "Aguarde..."
@@ -180,6 +181,7 @@ function Profile() {
                           type: "button",
                           className: "alert",
                           disabled: profileDeleteLoading,
+                          id: "delete-profile",
                           onClick: handleDelete,
                           children: profileDeleteLoading
                             ? "Aguarde..."
@@ -209,6 +211,7 @@ function Profile() {
 
               <StyledButton
                 className="primary mb-1"
+                id="theme-switch"
                 onClick={themeContext?.toggleTheme}
               >
                 Trocar para tema{" "}
@@ -219,6 +222,7 @@ function Profile() {
 
               <StyledButton
                 className="alert"
+                id="logout"
                 onClick={logout}
               >
                 Logout
