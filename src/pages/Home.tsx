@@ -98,6 +98,7 @@ function Home() {
             <>
               <Grid item xs={12} md={4}>
                 <CardComponent
+                id='total-sales'
                   className={
                     highlightsError
                       ? 'skeleton-loading skeleton-loading-mb-1'
@@ -119,6 +120,7 @@ function Home() {
               </Grid>
               <Grid item xs={12} md={4}>
                 <CardComponent
+                 id='month-goals'
                   className={
                     highlightsData
                       ? highlightsData[1].subtitle
@@ -138,6 +140,7 @@ function Home() {
               </Grid>
               <Grid item xs={12} md={4}>
                 <CardComponent
+                 id='total-leads'
                   className={
                     highlightsError
                       ? 'skeleton-loading skeleton-loading-mb-1'
@@ -160,7 +163,10 @@ function Home() {
           )}
 
           <Grid item xs={12} md={7}>
-            <CardComponent>
+            <CardComponent
+            id='month-sales-chart'
+            >
+              
               <StyledH2 className="mb-1">Valor de vendas no mês</StyledH2>
               <CustomChart
                 labels={['Jan', 'Fev', 'Mar', 'Abr', 'Mai']}
@@ -170,13 +176,17 @@ function Home() {
             </CardComponent>
           </Grid>
           <Grid item xs={12} md={5}>
-            <CardComponent>
+            <CardComponent
+             id='sales-stars'
+            >
               <StyledH2 className="mb-1">Maiores vendedores do mês</StyledH2>
               <AvatarList listData={mockListData} />
             </CardComponent>
           </Grid>
           <Grid item xs={12} md={5}>
-            <CardComponent>
+            <CardComponent
+             id='news'
+            >
               <StyledH2 className="mb-1">Notícias relevantes</StyledH2>
               <CustomTable
                 headers={mockTableData.headers}
@@ -185,7 +195,9 @@ function Home() {
             </CardComponent>
           </Grid>
           <Grid item xs={12} md={7}>
-            <CardComponent>
+            <CardComponent
+             id='year-sales-chart'
+            >
               <StyledH2 className="mb-1">Valor de vendas por mês</StyledH2>
               <CustomChart
                 labels={['Jan', 'Fev', 'Mar', 'Abr', 'Mai']}

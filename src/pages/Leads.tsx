@@ -94,7 +94,7 @@ function Leads() {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={7}>
             <CardComponent>
-              <StyledH2 className="mb-1">
+              <StyledH2 className="mb-1" id="leads-title">
                 Meus Leads
               </StyledH2>
 
